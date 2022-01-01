@@ -8,6 +8,8 @@ FROM httpd:2.4.35-alpine
 COPY conf/ conf/
 
 RUN set -ex; \
+    # Install usermod so we can set userid of www-data to work with volume mounts
+    apk add --no-cache shadow; \
     # Create empty default DocumentRoot.
     mkdir -p "/var/www/html"; \
     # Create directories for Dav data and lock database.
