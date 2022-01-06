@@ -101,7 +101,11 @@ fi
 # Create directories for Dav data and lock database.
 [ ! -d "/var/lib/dav/data" ] && mkdir -p "/var/lib/dav/data"
 [ ! -e "/var/lib/dav/DavLock" ] && touch "/var/lib/dav/DavLock"
-usermod -u 1001 www-data # TODO: get user id from docker argument set at build time using name of group/user we want
+#usermod -u 1001 www-data # TODO: get user id from docker argument set at build time using name of group/user we want
+if [ -z $(grep "mygroup" /etc/group)  ]; then
+    groupadd -g 1001 mygroup
+fi
+usermod -a -G mygroup www-data
 #chown -R www-data:www-data "/var/lib/dav"
 
 exec "$@"
